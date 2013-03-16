@@ -1,8 +1,6 @@
 ;;;; daisy.lisp
 
-(in-package #:daisy)
-
-;;; "daisy" goes here. Hacks and glory await!
+(in-package :daisy)
 
 (defparameter *acceptor* nil)
 
@@ -18,7 +16,6 @@
        (hunchentoot:create-regex-dispatcher "^/js$" 'game-js)
        (hunchentoot:create-regex-dispatcher "^/$" 'load-game)))
 
-
 (defun load-game ()
   (cl-who:with-html-output-to-string
       (*standard-output* nil :prologue t :indent nil)
@@ -26,11 +23,3 @@
      (:html
        (:body
          (:div "Honk!"))))))
-
-
-(defun game-js ()
-  (setf (hunchentoot:content-type*) "application/javascript")
-  (ps
-    (defvar honk "")))
-
-

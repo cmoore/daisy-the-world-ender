@@ -3,5 +3,7 @@
 (defpackage #:daisy
   (:use #:cl
         #:parenscript
-        #:cl-who))
+        #:cl-who)
+  (:export #:start-server))
+
 

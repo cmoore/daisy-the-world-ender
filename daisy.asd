@@ -9,6 +9,8 @@
                :cl-who
                :parenscript
                :cl-ivy)
-  :components ((:file "package")
-               (:file "daisy")))
-
+  :components ((:module "src"
+                        :serial t
+                        :components ((:file "package")
+                                     (:file "daisy")
+                                     (:file "js")))))
