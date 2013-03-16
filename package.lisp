@@ -1,5 +1,7 @@
 ;;;; package.lisp
 
 (defpackage #:daisy
-  (:use #:cl))
+  (:use #:cl
+        #:parenscript
+        #:cl-who))
 
