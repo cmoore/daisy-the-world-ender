@@ -18,18 +18,29 @@
       (list
        (hunchentoot:create-regex-dispatcher "^/$" 'load-game)))
 
-(defun regen-js ()
-  (game-js)
-  (trivial-shell:shell-command "npm install && ./node_modules/browserify/bin/cmd.js init.js -o bundle.js"))
+(defun rebuild-javascript ()
+  (write-javascript)
+  (compile-javascript))
+
+(defun compile-javascript ()
+   (trivial-shell:shell-command
+   "npm install && ./node_modules/browserify/bin/cmd.js init.js -o bundle.js"))
+
+(defun write-javascript ()
+  (with-open-file (str "index.js"
+                       :direction :output
+                       :if-exists :rename
+                       :if-does-not-exist :create)
+    (format str (new-js))))
 
 (defun load-game ()
-;  (regen-js)
+;  (write-javascript)
+;  (compile-javascript)
   (cl-who:with-html-output-to-string
       (*standard-output* nil :prologue t :indent nil)
     (htm
      (:html
        (:body
-         (:script :src "/bundle.js")
-         (:div :id "container" "Honk!")
-         (:div :id "status"))))))
+         (:div :id "container" :style "width:800px;height:600px;")
+         (:script :src "/bundle.js"))))))
 
