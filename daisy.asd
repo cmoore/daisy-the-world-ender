@@ -8,6 +8,7 @@
   :depends-on (:hunchentoot
                :cl-who
                :parenscript
+               :trivial-shell
                :cl-ivy)
   :components ((:module "src"
                         :serial t
