@@ -20,3 +20,9 @@ npm install
 sbcl --load init.lisp
 
 #+END_SRC
+
+Then, connect to http://localhost:8080/ and see if it works.
+
+=write-javascript= writes the code, and =compile-javascript= runs browserify on it making the =bundle.js= file.
+
+The interesting parts are in =src/js.lisp=.
