@@ -17,7 +17,7 @@ It's tested with SBCL but there's really nothing SBCL specific in the code.
 
 npm install
 ...
-sbcl --load init.lisp
+sbcl --load init.lisp # Starts swank on 4000 and hunchentoot on 8080
 
 #+END_SRC
 
