@@ -34,8 +34,8 @@
     (format str (new-js))))
 
 (defun load-game ()
-;  (write-javascript)
-;  (compile-javascript)
+  (write-javascript)
+  (compile-javascript)
   (cl-who:with-html-output-to-string
       (*standard-output* nil :prologue t :indent nil)
     (htm

@@ -1,36 +1,66 @@
 
 (in-package :daisy)
 
-
-
 (defun new-js ()
   (ps
     (defvar create-game (require "voxel-engine"))
+    (defvar highlight (require "voxel-highlight"))
+    
     (defvar game (create-game (create generate (aref (@ (require "voxel") generator) "Hill")
-                                      cube-size 5
+                                      cube-size 25
                                       world-origin (array 0 0 0)
                                       materials (array (array "grass" "dirt" "grass_dirt")
-                                                      "obsidian"
-                                                      "brick"
-                                                      "grass"
-                                                      "plank"))))
+                                                       "obsidian"
+                                                       "brick"
+                                                       "grass"
+                                                       "plank"))))
 
     (setf window.game game)
-
+    
     (game.append-to "#container")
     (defvar create-player ((require "voxel-player") game))
     (defvar substack (create-player "/img/substack.png"))
     ((@ substack yaw position set) 2 14 4)
-   ; (setf substack.position.y 1000)
-    (substack.possess)))
+    (substack.possess)
 
+
+
+    ; Highlight
+    (defvar hl (highlight game (create color 0x00ff00
+                                       distance 2
+                                       adjacent-animate t)))
+    (setf game.highlighter hl)
+    (defvar block-pos-place nil)
+    (defvar block-pos-erase nil)
+    (defvar current-material 1)
+    
+    ((@ hl on) "highlight" (lambda (voxel-pos)
+                             (setf block-pos-erase voxel-pos)))
+    ((@ hl on) "remove" (lambda (vp)
+                          (setf block-pos-erase nil)))
+    ((@ hl on) "highlight-adjacent" (lambda (vp)
+                                      (setf block-pos-place vp)))
+    ((@ hl on) "remove-adjacent" (lambda (vp)
+                                   (setf block-pos-place nil)))
+
+
+
+    
+    (game.on "fire" (lambda (target state)
+                      (defvar position block-pos-place)
+                      (if position
+                          ((@ game create-block) position current-material)
+                          (progn
+                            (setf position block-pos-erase)
+                            (when position
+                              ((@ game set-block) position 0))))
+                      t))))
 
 (defun game-js ()
   (ps
     (defvar create-game (require "voxel-engine"))
     (defvar highlight (require "voxel-highlight"))
     (defvar player (require "voxel-player"))
-    (defvar texture-path ((require "painterly-textures") __dirname))
     (defvar voxel (require "voxel"))
     (defvar extend (require "extend"))
 
@@ -47,25 +77,17 @@
 
     (setf module.exports
           (lambda (opts)
-            (defvar defaults (create generate-voxel-chunk t_generator
-                                     cube-size 25
-                                     chunk-size t_chunk_size
-                                     chunk-distance t_chunk_distance
-                                     world-origin (array 0 0 0)
-                                     materials (array (array "grass" "dirt" "grass_dirt")
-                                                      "obsidian"
-                                                      "brick"
-                                                      "grass"
-                                                      "plank")
-                                     starting-position (array 0 0 0)
-                                     texture-path texture-path
-                                     controls (create discrete-fire t jump 4)))
-            (setf opts (extend (create) defaults (or opts (create))))
-
-            (defvar game (create-game opts))
+                        
+            (defvar game (create-game
+                          (create generate (aref (@ (require "voxel") generator) "Hill")
+                                  cube-size 5
+                                  world-origin (array 0 0 0)
+                                  materials (array (array "grass" "dirt" "grass_dirt")
+                                                   "obsidian"
+                                                   "brick"
+                                                   "grass"
+                                                   "plank"))))
             (setf window.game game)
-            (defvar container (or opts.container document.body))
-
             ((@ game append-to) document.body)
 
             (defvar create-player (player game))
