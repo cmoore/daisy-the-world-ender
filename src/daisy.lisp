@@ -20,7 +20,7 @@
 
 (defun regen-js ()
   (game-js)
-  (trivial-shell:shell-command "npm install && ./node_modules/browserify/bin/cmd.js test.js -o bundle.js"))
+  (trivial-shell:shell-command "npm install && ./node_modules/browserify/bin/cmd.js init.js -o bundle.js"))
 
 (defun load-game ()
 ;  (regen-js)
