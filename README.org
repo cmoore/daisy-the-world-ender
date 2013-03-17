@@ -13,10 +13,10 @@ An experiment in generating a game in Javascript from Common Lisp.
 - a lisp with quicklisp installed.
 It's tested with SBCL but there's really nothing SBCL specific in the code.
 
-#+BEGIN_ASCII
+#+BEGIN_SRC
 
 npm install
 ...
 sbcl --load init.lisp
 
-#+END_ASCII
+#+END_SRC
